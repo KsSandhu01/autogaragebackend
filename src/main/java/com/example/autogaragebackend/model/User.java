@@ -2,11 +2,15 @@ package com.example.autogaragebackend.model;
 
 import com.example.autogaragebackend.enums.Role;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@Getter
+@Setter
 @Table(name = "users")
 
 public class User {
@@ -23,7 +27,7 @@ public class User {
     @Column
     private String password;
 
-    @Column
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 }
