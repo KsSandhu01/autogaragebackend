@@ -1,0 +1,187 @@
+package com.example.autogaragebackend.service.impl;
+
+import com.example.autogaragebackend.exception.ResourceNotFoundException;
+import com.example.autogaragebackend.model.Klant;
+import com.example.autogaragebackend.model.Auto;
+import com.example.autogaragebackend.repository.AutoRepository;
+import com.example.autogaragebackend.service.KlantService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Blob;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.apache.naming.SelectorContext.prefix;
+
+@Service
+public class AutoServiceImpl implements com.example.garagebackend.service.AutoService {
+
+
+    @Autowired
+    private AutoRepository autoRepository;
+
+    @Autowired
+    private KlantService klantService;
+
+    @Override
+    public long createAuto(Auto auto) {
+        Auto auto1 = autoRepository.save(auto);
+        return auto.getId();
+    }
+
+    @Override
+    public long createAutoMetKlant(Auto auto, long klantId) {
+        Klant klant = klantService.getKlantById(klantId).get();
+        auto.setKlant(klant);
+        Auto auto1 = autoRepository.save(auto);
+        return auto1.getId();
+    }
+
+    @Override
+    public long createAutometBestandEnKlant(Auto auto, MultipartFile file, long klantId) {
+        Klant klant = klantService.getKlantById(klantId).get();
+        auto.setKlant(klant);
+
+        Blob blob = null;
+        byte[] by = null;
+        try {
+            by = file.getBytes();
+            blob = new SerialBlob(by);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        auto.setBestandNaam(file.getOriginalFilename());
+        auto.setContentType(file.getContentType());
+        auto.setPdfBestand(blob);
+        auto = autoRepository.save(auto);
+        return auto.getId();
+    }
+
+    @Override
+    public String getBestandPath(long Autoid) {
+        return autoRepository.findById(Autoid).get().getBestandLocatie();
+    }
+
+    static String bestandLocatie = "C:" + File.separator + "Autogarage" + File.separator;
+
+    @Override
+    public long createAutoMetBestand(Auto auto, MultipartFile file) {
+        Auto auto1 = autoRepository.save(auto);
+        auto1.setBestandLocatie(bestandLocatie + auto1.getId() + "_" + file.getOriginalFilename());
+        try {
+            bestandOpslaan(file, auto1.getId());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return auto1.getId();
+    }
+
+
+    @Override
+    public long createAutoMetBestandIndb(Auto auto, MultipartFile bestand) {
+        Blob blob = null;
+        byte[] by = null;
+        try {
+            by = bestand.getBytes();
+            blob = new SerialBlob(by);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        auto.setBestandNaam(bestand.getOriginalFilename());
+        auto.setContentType(auto.getContentType());
+        auto.setPdfBestand(blob);
+        auto = autoRepository.save(auto);
+        return auto.getId();
+
+    }
+
+    @Override
+    public void updateAuto(long id, Auto auto) {
+        if (!autoRepository.existsById(id)) throw new ResourceNotFoundException();
+        Auto existingAuto = autoRepository.findById(id).get();
+        existingAuto.setKenteken(auto.getKenteken());
+        existingAuto.setMerk(auto.getMerk());
+        existingAuto.setModel(auto.getModel());
+        existingAuto.setKmStand(auto.getKmStand());
+        existingAuto.setBouwJaar(auto.getBouwJaar());
+        autoRepository.save(existingAuto);
+    }
+
+    @Override
+    public void deelUpdateAuto(long id, Map<String, String> velden) {
+        if (!autoRepository.existsById(id)) throw new ResourceNotFoundException();
+        Auto auto = autoRepository.findById(id).get();
+        for (String field : velden.keySet()) {
+            switch (field.toLowerCase()) {
+                case "number":
+                    auto.setKenteken((String) velden.get(field));
+                    break;
+                case "brand":
+                    auto.setMerk((String) velden.get(field));
+                    break;
+                case "model":
+                    auto.setModel((String) velden.get(field));
+                    break;
+                case "kilometers":
+                    auto.setKmStand((String) velden.get(field));
+                    break;
+                case "year":
+                    auto.setBouwJaar((String) velden.get(field));
+                    break;
+            }
+        }
+        autoRepository.save(auto);
+    }
+
+    @Override
+    public void deleteAuto(long id) {
+        if (!autoRepository.existsById(id)) throw new ResourceNotFoundException();
+        autoRepository.deleteById(id);
+
+    }
+
+    @Override
+    public Collection<Auto> getAutos() {
+        return autoRepository.findAll();
+
+    }
+
+    @Override
+    public Collection<Auto> getAutosVanMerk(String brand) {
+        return autoRepository.findAllByMerk(brand);
+
+    }
+
+    @Override
+    public Collection<Auto> getAutosByModel(String model) {
+        return autoRepository.findAllByModel(model);
+    }
+
+    @Override
+    public Optional<Auto> getAutoById(long id) {
+        if (!autoRepository.existsById(id)) throw new ResourceNotFoundException();
+        return autoRepository.findById(id);    }
+
+    @Override
+    public boolean AutoExistsById(long id) {
+        return autoRepository.existsById(id);
+    }
+
+    private void bestandOpslaan(MultipartFile bestand, long id) throws IOException {
+        if (!bestand.isEmpty()) {
+            byte[] bytes = bestand.getBytes();
+            Path path = Paths.get(bestandLocatie + prefix + "_" + bestand.getOriginalFilename());
+            Files.write(path, bytes);
+        }
+    }
+}
