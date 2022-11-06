@@ -6,20 +6,20 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "medewerkers")
+public class Medewerker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column
-    private String name;
+    private String naam;
 
     @Column
-    private String username;
+    private String gebruikersnaam;
 
     @Column
-    private String password;
+    private String wachtwoord;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -33,28 +33,28 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNaam() {
+        return naam;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNaam(String naam) {
+        this.naam = naam;
     }
 
-    public String getUsername() {
-        return username;
+    public String getGebruikersnaam() {
+        return gebruikersnaam;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setGebruikersnaam(String gebruikersnaam) {
+        this.gebruikersnaam = gebruikersnaam;
     }
 
-    public String getPassword() {
-        return password;
+    public String getWachtwoord() {
+        return wachtwoord;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setWachtwoord(String wachtwoord) {
+        this.wachtwoord = wachtwoord;
     }
 
     public Role getRole() {
