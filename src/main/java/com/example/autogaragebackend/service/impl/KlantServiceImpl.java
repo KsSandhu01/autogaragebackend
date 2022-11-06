@@ -41,14 +41,17 @@ public class KlantServiceImpl implements KlantService {
         Klant klant = klantRepository.findById(id).get();
         for (String field : velden.keySet()) {
             switch (field.toLowerCase()) {
-                case "customernumber":
+                case "klantnummer":
                     klant.setKlantnummer((String) velden.get(field));
                     break;
-                case "name":
+                case "naam":
                     klant.setNaam((String) velden.get(field));
                     break;
-                case "telephone":
+                case "telNummer":
                     klant.setTelNummer((String) velden.get(field));
+                    break;
+                case "email":
+                    klant.setEmail((String) velden.get(field));
                     break;
 
             }

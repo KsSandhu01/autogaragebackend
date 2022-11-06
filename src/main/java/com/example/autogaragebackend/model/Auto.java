@@ -41,7 +41,7 @@ public class Auto {
     private Blob pdfBestand;
 
     @OneToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "klant_id")
     private Klant klant;
 
     public long getId() {

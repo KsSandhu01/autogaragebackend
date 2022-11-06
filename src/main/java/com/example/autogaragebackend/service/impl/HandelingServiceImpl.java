@@ -34,7 +34,7 @@ public class HandelingServiceImpl implements HandelingService {
     }
 
     @Override
-    public void partialUpdateHandeling(long id, Map<String, String> velden) {
+    public void updateDeelVanHandeling(long id, Map<String, String> velden) {
         if (!handelingRepository.existsById(id)) throw new ResourceNotFoundException();
         Handeling handeling = handelingRepository.findById(id).get();
         for (String veld : velden.keySet()) {
@@ -42,7 +42,7 @@ public class HandelingServiceImpl implements HandelingService {
                 case "naam":
                     handeling.setNaam((String) velden.get(veld));
                     break;
-                case "price":
+                case "prijs":
                     handeling.setPrijs((String) velden.get(veld));
                     break;
 

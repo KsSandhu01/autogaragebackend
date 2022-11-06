@@ -35,19 +35,19 @@ public class OnderdeelServiceImpl implements OnderdeelService {
     }
 
     @Override
-    public void updateDeelVanOnderdeel(long id, Map<String, String> fields) {
+    public void updateDeelVanOnderdeel(long id, Map<String, String> velden) {
         if (!onderdeelRepository.existsById(id)) throw new ResourceNotFoundException();
         Onderdeel onderdeel = onderdeelRepository.findById(id).get();
-        for (String field : fields.keySet()) {
-            switch (field.toLowerCase()) {
-                case "name":
-                    onderdeel.setNaam((String) fields.get(field));
+        for (String veld : velden.keySet()) {
+            switch (veld.toLowerCase()) {
+                case "naam":
+                    onderdeel.setNaam((String) velden.get(veld));
                     break;
-                case "price":
-                    onderdeel.setPrijs((String) fields.get(field));
+                case "prijs":
+                    onderdeel.setPrijs((String) velden.get(veld));
                     break;
-                case "stock":
-                    onderdeel.setVoorraad((String) fields.get(field));
+                case "voorraad":
+                    onderdeel.setVoorraad((String) velden.get(veld));
                     break;
 
             }

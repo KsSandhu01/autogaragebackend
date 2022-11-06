@@ -1,6 +1,7 @@
 package com.example.autogaragebackend.controller;
 
 import com.example.autogaragebackend.model.Auto;
+import com.example.autogaragebackend.service.AutoService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -23,7 +24,7 @@ import java.util.Map;
 public class AutoController {
 
     @Autowired
-    private com.example.garagebackend.service.AutoService autoService;
+    private AutoService autoService;
 
     @GetMapping(value = "")
     public ResponseEntity<Collection<Auto>> getAutos() {
@@ -170,6 +171,9 @@ public class AutoController {
         autoService.deelUpdateAuto(id, velden);
         return ResponseEntity.noContent().build();
     }
+
+
+
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Object> deleteAuto(@PathVariable("id") long id) {

@@ -88,6 +88,7 @@ public class AfspraakServiceImpl implements AfspraakService {
 
     @Override
     public UitgevoerdeHandelingen voegOverigeHandelingAanAfspraak(long afspraakid, Handeling handeling) {
+
         long handelingid = handelingService.createHandeling(handeling);
 
         return voegHandelingAanAfspraak(afspraakid, handelingid);

@@ -4,6 +4,7 @@ import com.example.autogaragebackend.exception.ResourceNotFoundException;
 import com.example.autogaragebackend.model.Klant;
 import com.example.autogaragebackend.model.Auto;
 import com.example.autogaragebackend.repository.AutoRepository;
+import com.example.autogaragebackend.service.AutoService;
 import com.example.autogaragebackend.service.KlantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ import java.util.Optional;
 import static org.apache.naming.SelectorContext.prefix;
 
 @Service
-public class AutoServiceImpl implements com.example.garagebackend.service.AutoService {
+public class AutoServiceImpl implements AutoService {
 
 
     @Autowired
@@ -108,13 +109,15 @@ public class AutoServiceImpl implements com.example.garagebackend.service.AutoSe
     @Override
     public void updateAuto(long id, Auto auto) {
         if (!autoRepository.existsById(id)) throw new ResourceNotFoundException();
-        Auto existingAuto = autoRepository.findById(id).get();
-        existingAuto.setKenteken(auto.getKenteken());
-        existingAuto.setMerk(auto.getMerk());
-        existingAuto.setModel(auto.getModel());
-        existingAuto.setKmStand(auto.getKmStand());
-        existingAuto.setBouwJaar(auto.getBouwJaar());
-        autoRepository.save(existingAuto);
+        Auto bestaandeAuto = autoRepository.findById(id).get();
+        bestaandeAuto.setKenteken(auto.getKenteken());
+        bestaandeAuto.setMerk(auto.getMerk());
+        bestaandeAuto.setModel(auto.getModel());
+        bestaandeAuto.setKmStand(auto.getKmStand());
+        bestaandeAuto.setBouwJaar(auto.getBouwJaar());
+        bestaandeAuto.setKleur(auto.getKleur());
+
+        autoRepository.save(bestaandeAuto);
     }
 
     @Override
@@ -123,20 +126,23 @@ public class AutoServiceImpl implements com.example.garagebackend.service.AutoSe
         Auto auto = autoRepository.findById(id).get();
         for (String field : velden.keySet()) {
             switch (field.toLowerCase()) {
-                case "number":
+                case "kenteken":
                     auto.setKenteken((String) velden.get(field));
                     break;
-                case "brand":
+                case "merk":
                     auto.setMerk((String) velden.get(field));
                     break;
                 case "model":
                     auto.setModel((String) velden.get(field));
                     break;
-                case "kilometers":
+                case "kmstand":
                     auto.setKmStand((String) velden.get(field));
                     break;
-                case "year":
+                case "bouwjaar":
                     auto.setBouwJaar((String) velden.get(field));
+                    break;
+                case "kleur":
+                    auto.setKleur((String) velden.get(field));
                     break;
             }
         }
@@ -170,10 +176,11 @@ public class AutoServiceImpl implements com.example.garagebackend.service.AutoSe
     @Override
     public Optional<Auto> getAutoById(long id) {
         if (!autoRepository.existsById(id)) throw new ResourceNotFoundException();
-        return autoRepository.findById(id);    }
+        return autoRepository.findById(id);
+    }
 
     @Override
-    public boolean AutoExistsById(long id) {
+    public boolean autoExistsById(long id) {
         return autoRepository.existsById(id);
     }
 

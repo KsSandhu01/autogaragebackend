@@ -10,7 +10,7 @@ public interface HandelingService {
 
     public abstract long createHandeling(Handeling handeling);
     public abstract void updateHandeling(long id, Handeling handeling);
-    public abstract void partialUpdateHandeling(long id, Map<String, String> fields);
+    public abstract void updateDeelVanHandeling(long id, Map<String, String> fields);
     public abstract void deleteHandeling(long id);
     public abstract Collection<Handeling> getHandelingen();
     public abstract Optional<Handeling> getHandelingById(long id);

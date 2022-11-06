@@ -7,6 +7,6 @@ import java.util.Collection;
 
 public interface AutoRepository extends JpaRepository<Auto, Long> {
     public Collection<Auto> findAllByModel(String model);
-    public Collection<Auto> findAllByMerk(String make);
+    public Collection<Auto> findAllByMerk(String merk);
 
  }
