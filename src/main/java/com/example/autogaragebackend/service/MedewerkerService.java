@@ -1,6 +1,7 @@
 package com.example.autogaragebackend.service;
 
 import com.example.autogaragebackend.model.Medewerker;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -8,7 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public interface MedewerkerService {
+public interface MedewerkerService  extends UserDetailsService {
 
     public abstract long createMedewerker(Medewerker medewerker);
     public abstract void updateMedewerker(long id, Medewerker medewerker);

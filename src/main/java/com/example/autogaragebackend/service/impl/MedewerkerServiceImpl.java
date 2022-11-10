@@ -5,7 +5,10 @@ import com.example.autogaragebackend.model.Medewerker;
 import com.example.autogaragebackend.repository.MedewerkerRepository;
 import com.example.autogaragebackend.service.MedewerkerService;
 
+import com.example.autogaragebackend.util.SpringUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -96,5 +99,14 @@ public class MedewerkerServiceImpl implements MedewerkerService {
     private String getEncryptedWachtwoord(String wachtwoord) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder.encode(wachtwoord);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String gebruikersnaam) throws UsernameNotFoundException {
+        Optional<Medewerker> userOptional = medewerkerRepository.findByGebruikersnaam(gebruikersnaam);
+
+        Medewerker user=userOptional
+                .orElseThrow(()-> new UsernameNotFoundException("Username Not Found"));
+        return new SpringUser(user);
     }
 }

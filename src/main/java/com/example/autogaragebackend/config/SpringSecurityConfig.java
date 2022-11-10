@@ -1,9 +1,12 @@
 package com.example.autogaragebackend.config;
 
+import com.example.autogaragebackend.service.MedewerkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,22 +22,12 @@ import javax.sql.DataSource;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private DataSource dataSource;
+    private MedewerkerService medewerkerService;
 
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        try {
-            auth.inMemoryAuthentication()
-                    .withUser("admin").password("{noop}password").roles("ADMINISTRATIEFMEDEWERKER")
-                    .and()
-                    .withUser("kassamedewerker").password("{noop}password").roles("KASSAMEDEWERKER")
-                    .and()
-                    .withUser("monteur").password("{noop}password").roles("MONTEUR");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(authenticationProvider());
     }
 
 
@@ -56,13 +49,19 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/afspraak/voegOverigeHandeling/**").hasRole("MONTEUR")
                 .antMatchers(HttpMethod.GET, "/v1/afspraak/**").hasRole("MONTEUR")
                 .antMatchers(HttpMethod.GET, "/v1/bon/**").hasRole("KASSAMEDEWERKER")
-                .antMatchers(HttpMethod.POST,"/v1/afspraak/**").hasRole("ADMINISTRATIEFMEDEWERKER")
+                .antMatchers(HttpMethod.POST, "/v1/afspraak/**").hasRole("ADMINISTRATIEFMEDEWERKER")
 
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();
+    }
 
-
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(medewerkerService);
+        provider.setPasswordEncoder(new BCryptPasswordEncoder());
+        return provider;
     }
 
 
