@@ -37,6 +37,9 @@ public class AutoServiceImpl implements AutoService {
 
     @Autowired
     private AutoMapper autoMapper;
+
+    static String bestandLocatie = "C:" + File.separator + "Autogarage" + File.separator;
+
     @Override
     public Auto createAuto(AutoDto dto) {
         Auto auto= autoMapper.map(dto);
@@ -79,7 +82,6 @@ public class AutoServiceImpl implements AutoService {
         return autoRepository.findById(Autoid).get().getBestandLocatie();
     }
 
-    static String bestandLocatie = "C:" + File.separator + "Autogarage" + File.separator;
 
     @Override
     public Auto createAutoMetBestand(AutoDto dto, MultipartFile file) {
