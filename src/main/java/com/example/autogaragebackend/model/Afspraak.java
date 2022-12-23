@@ -28,11 +28,11 @@ public class Afspraak  implements Serializable {
     private Auto auto;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "afspraak", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "afspraak", fetch = FetchType.EAGER)
     private Set<UitgevoerdeHandelingen> uitgevoerdeHandelingen;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "afspraak", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "afspraak", fetch = FetchType.EAGER)
     private Set<GebruikteOnderdelen> gebruikteOnderdelen;
 
     public Long getId() {

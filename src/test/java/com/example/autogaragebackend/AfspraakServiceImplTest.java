@@ -1,8 +1,8 @@
 package com.example.autogaragebackend;
 
+import com.example.autogaragebackend.dto.HandelingDto;
 import com.example.autogaragebackend.enums.AfspraakStatus;
-import com.example.autogaragebackend.model.Afspraak;
-import com.example.autogaragebackend.model.Klant;
+import com.example.autogaragebackend.model.*;
 import com.example.autogaragebackend.repository.AfspraakRepository;
 import com.example.autogaragebackend.service.AfspraakService;
 import com.example.autogaragebackend.service.KlantService;
@@ -15,6 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -26,16 +28,7 @@ public class AfspraakServiceImplTest {
     @Autowired
     private AfspraakService afspraakService;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
-    @BeforeEach
-    void before(){
-//        jdbcTemplate.execute("insert into `klant` (id,email, klantnummer, naam, tel_nummer)\n" +
-//                "values (1,'kawal@mail.nl', '123456', 'Dirk', '0612345678')");
-//        jdbcTemplate.execute("insert into `auto` (id,merk, model, kenteken, km_stand, bouw_jaar, kleur, klant_id)\n" +
-//                "values (12,'Audi', 'RS7', '74-056-KP', '152633', '2016', 'Rood', '1')");
-    }
     @Test
     void createAfspraakTest(){
         Afspraak afspraak = afspraakService.createAfspraak(1, 1);
@@ -51,6 +44,70 @@ public class AfspraakServiceImplTest {
 
         afspraakService.updateStatus(1,AfspraakStatus.NIETUITVOEREN);
         afspraak = afspraakRepository.findById(1l).get();
-       // assertTrue(afspraak.getStatus().equals(AfspraakStatus.NIETUITVOEREN.toString()));
+        assertTrue(afspraak.getStatus().equals(AfspraakStatus.NIETUITVOEREN.toString()));
     }
+
+    @Test
+    void getAfspraakTest(){
+        Afspraak afspraken = afspraakService.getAfspraak(1);
+        assertNotNull(afspraken);
+        assertTrue(afspraken.getStatus().equals(AfspraakStatus.GEPLAND.toString()));
+
+    }
+    @Test
+    void getAllAfsprakenTest(){
+        List<Afspraak> allAfspraken = afspraakService.getAllAfspraken();
+        assertEquals(1,allAfspraken.size());
+    }
+
+    @Test
+    void voegOnderdeelAanAfspraakTest(){
+        GebruikteOnderdelen gebruikteOnderdelen = afspraakService.voegOnderdeelAanAfspraak(1, 1);
+        assertEquals(gebruikteOnderdelen.getOnderdeel().getNaam(),"Uitlaat");
+        assertNotNull(gebruikteOnderdelen);
+    }
+    @Test
+    void voegHandelingAanAfspraakTest(){
+        UitgevoerdeHandelingen uitgevoerdeHandelingen = afspraakService.voegHandelingAanAfspraak(1, 1);
+        assertNotNull(uitgevoerdeHandelingen);
+    }
+
+    @Test
+    void voegOverigeHandelingAanAfspraakTest(){
+        HandelingDto dto = HandelingDto.builder()
+                .naam("Waterpomp reparatie")
+                .prijs("€ 350")
+                .build();
+        UitgevoerdeHandelingen uitgevoerdeHandelingen = afspraakService.voegOverigeHandelingAanAfspraak(1, dto);
+
+        assertNotNull(uitgevoerdeHandelingen);
+    }
+
+    @Test
+    void fetchByStatusTest(){
+        List<Afspraak> list = afspraakService.fetchByStatus("GEPLAND");
+        assertEquals(1,list.size());
+    }
+
+    @Test
+    void fetchByKlantTest(){
+        List<Afspraak> afspraken = afspraakService.fetchByKlant(1);
+        assertEquals(afspraken.get(0).getKlant().getNaam(),"Dirk");
+        assertEquals(1,afspraken.size());
+    }
+
+//    @Test
+//    void genereerBonTest(){
+//        Bon bon = afspraakService.genereerBon(1);
+//        assertEquals("45",bon.getTotaal());
+//        GebruikteOnderdelen gebruikteOnderdelen = afspraakService.voegOnderdeelAanAfspraak(1, 1);
+//        UitgevoerdeHandelingen uitgevoerdeHandelingen = afspraakService.voegHandelingAanAfspraak(1, 1);
+//        afspraakService.voegOnderdeelAanAfspraak(1,1);
+//        afspraakService.voegHandelingAanAfspraak(1,1);
+//        afspraakService.genereerBon(1);
+//
+//        assertEquals("45",bon.getTotaal());
+//
+//        assertNotNull(bon);
+//    }
 }
