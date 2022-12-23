@@ -1,5 +1,6 @@
 package com.example.autogaragebackend.controller;
 
+import com.example.autogaragebackend.dto.OnderdeelDto;
 import com.example.autogaragebackend.model.Onderdeel;
 import com.example.autogaragebackend.service.OnderdeelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class OnderdeelController {
     }
 
     @PostMapping(value = "")
-    public ResponseEntity<URI> createOnderdeel(@RequestBody Onderdeel onderdeel) {
+    public ResponseEntity<URI> createOnderdeel(@RequestBody OnderdeelDto onderdeel) {
         long newId = onderdeelService.createOnderdeel(onderdeel);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -40,13 +41,13 @@ public class OnderdeelController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> updateOnderdeel(@PathVariable("id") long id, @RequestBody Onderdeel onderdeel) {
+    public ResponseEntity<Object> updateOnderdeel(@PathVariable("id") long id, @RequestBody OnderdeelDto onderdeel) {
         onderdeelService.updateOnderdeel(id, onderdeel);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping(value = "/{id}")
-    public ResponseEntity<Object> updateDeelVanOnderdeel(@PathVariable("id") long id, @RequestBody Map<String, String> velden) {
+    public ResponseEntity<Object> updateDeelVanOnderdeel(@PathVariable("id") long id, @RequestBody OnderdeelDto velden) {
         onderdeelService.updateDeelVanOnderdeel(id, velden);
         return ResponseEntity.noContent().build();
     }

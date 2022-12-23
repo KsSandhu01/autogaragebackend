@@ -1,6 +1,8 @@
 package com.example.autogaragebackend.service.impl;
 
+import com.example.autogaragebackend.dto.KlantDto;
 import com.example.autogaragebackend.exception.ResourceNotFoundException;
+import com.example.autogaragebackend.mapper.KlantMapper;
 import com.example.autogaragebackend.model.Klant;
 import com.example.autogaragebackend.repository.KlantRepository;
 import com.example.autogaragebackend.service.KlantService;
@@ -17,45 +19,49 @@ public class KlantServiceImpl implements KlantService {
 
     @Autowired
     private KlantRepository klantRepository;
-
+    @Autowired
+    private KlantMapper klantMapper;
     @Override
-    public long createKlant(Klant klant) {
-        Klant klant1 = klantRepository.save(klant);
+    public long createKlant(KlantDto dto) {
+        Klant klant1 = klantMapper.map(dto)         ;
+        klantRepository.save(klant1);
         return klant1.getId();
     }
 
     @Override
-    public void updateKlant(long id, Klant klant) {
+    public void updateKlant(long id, KlantDto dto) {
         if (!klantRepository.existsById(id)) throw new ResourceNotFoundException();
-        Klant bestaandeKlant = klantRepository.findById(id).get();
-        bestaandeKlant.setKlantnummer(klant.getKlantnummer());
-        bestaandeKlant.setNaam(klant.getNaam());
-        bestaandeKlant.setTelNummer(klant.getTelNummer());
+        Klant klant = klantRepository.findById(id).get();
+        klantMapper.update(klant,dto);
+//        klant.setKlantnummer(klant.getKlantnummer());
+//        klant.setNaam(klant.getNaam());
+//        klant.setTelNummer(klant.getTelNummer());
 
-        klantRepository.save(bestaandeKlant);
+        klantRepository.save(klant);
     }
 
     @Override
-    public void deelUpdateKlant(long id, Map<String, String> velden) {
+    public void deelUpdateKlant(long id, KlantDto dto) {
         if (!klantRepository.existsById(id)) throw new ResourceNotFoundException();
         Klant klant = klantRepository.findById(id).get();
-        for (String field : velden.keySet()) {
-            switch (field.toLowerCase()) {
-                case "klantnummer":
-                    klant.setKlantnummer((String) velden.get(field));
-                    break;
-                case "naam":
-                    klant.setNaam((String) velden.get(field));
-                    break;
-                case "telNummer":
-                    klant.setTelNummer((String) velden.get(field));
-                    break;
-                case "email":
-                    klant.setEmail((String) velden.get(field));
-                    break;
-
-            }
-        }
+        klantMapper.update(klant,dto);
+//        for (String field : velden.keySet()) {
+//            switch (field.toLowerCase()) {
+//                case "klantnummer":
+//                    klant.setKlantnummer((String) velden.get(field));
+//                    break;
+//                case "naam":
+//                    klant.setNaam((String) velden.get(field));
+//                    break;
+//                case "telNummer":
+//                    klant.setTelNummer((String) velden.get(field));
+//                    break;
+//                case "email":
+//                    klant.setEmail((String) velden.get(field));
+//                    break;
+//
+//            }
+//        }
         klantRepository.save(klant);
     }
 

@@ -1,12 +1,16 @@
 package com.example.autogaragebackend.service.impl;
 
+import com.example.autogaragebackend.dto.MedewerkerDto;
 import com.example.autogaragebackend.exception.ResourceNotFoundException;
+import com.example.autogaragebackend.mapper.MedewerkerMapper;
 import com.example.autogaragebackend.model.Medewerker;
 import com.example.autogaragebackend.repository.MedewerkerRepository;
 import com.example.autogaragebackend.service.MedewerkerService;
 
 import com.example.autogaragebackend.util.SpringUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,18 +25,21 @@ public class MedewerkerServiceImpl implements MedewerkerService {
 
     @Autowired
     private MedewerkerRepository medewerkerRepository;
-
+    @Autowired
+    private MedewerkerMapper medewerkerMapper;
     @Override
-    public long createMedewerker(Medewerker medewerker) {
+    public long createMedewerker(MedewerkerDto medewerker) {
         medewerker.setWachtwoord(getEncryptedWachtwoord(medewerker.getWachtwoord()));
-        Medewerker nieuweMedewerker = medewerkerRepository.save(medewerker);
+        Medewerker medewerker1=  medewerkerMapper.map(medewerker);
+        Medewerker nieuweMedewerker = medewerkerRepository.save(medewerker1);
         return nieuweMedewerker.getId();
     }
 
 
     @Override
-    public void updateMedewerker(long id, Medewerker medewerker) {
-        if (!medewerkerRepository.existsById(id)) throw new ResourceNotFoundException();
+    public void updateMedewerker(long id, MedewerkerDto medewerker) {
+        if (!medewerkerRepository.existsById(id))
+            throw new ResourceNotFoundException();
         Medewerker bestaandeMedewerker = medewerkerRepository.findById(id).get();
         bestaandeMedewerker.setNaam(medewerker.getNaam());
         bestaandeMedewerker.setGebruikersnaam(medewerker.getGebruikersnaam());
@@ -43,24 +50,11 @@ public class MedewerkerServiceImpl implements MedewerkerService {
     }
 
     @Override
-    public void updateDeelVanMedewerker(long id, Map<String, String> velden) {
-        if (!medewerkerRepository.existsById(id)) throw new ResourceNotFoundException();
-        Medewerker medewerker = medewerkerRepository.findById(id).get();
-        for (String field : velden.keySet()) {
-            switch (field.toLowerCase()) {
-                case "naam":
-                    medewerker.setNaam((String) velden.get(field));
-                    break;
-                case "medewerker":
-                    medewerker.setGebruikersnaam((String) velden.get(field));
-                    break;
-                case "wachtwoord":
-                    medewerker.setWachtwoord((String) velden.get(field));
-                    break;
-            }
-        }
-        medewerker.setWachtwoord(getEncryptedWachtwoord(medewerker.getWachtwoord()));
-        medewerkerRepository.save(medewerker);
+    public void updateDeelVanMedewerker(MedewerkerDto velden) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Medewerker medewerker1 =medewerkerRepository.findByGebruikersnaam(email).get();
+        medewerkerMapper.update(medewerker1,velden);
+        medewerkerRepository.save(medewerker1);
     }
 
     @Override

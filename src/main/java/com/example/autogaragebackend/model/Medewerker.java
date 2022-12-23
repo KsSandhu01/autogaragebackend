@@ -1,12 +1,20 @@
 package com.example.autogaragebackend.model;
 
 import com.example.autogaragebackend.enums.Role;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 
 
 @Entity
 @Table(name = "medewerkers")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Medewerker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +24,7 @@ public class Medewerker {
     private String naam;
 
     @Column
+    @NaturalId
     private String gebruikersnaam;
 
     @Column

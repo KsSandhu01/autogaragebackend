@@ -1,5 +1,6 @@
 package com.example.autogaragebackend.service.impl;
 
+import com.example.autogaragebackend.dto.HandelingDto;
 import com.example.autogaragebackend.enums.AfspraakStatus;
 import com.example.autogaragebackend.model.*;
 import com.example.autogaragebackend.repository.AfspraakRepository;
@@ -87,7 +88,7 @@ public class AfspraakServiceImpl implements AfspraakService {
     }
 
     @Override
-    public UitgevoerdeHandelingen voegOverigeHandelingAanAfspraak(long afspraakid, Handeling handeling) {
+    public UitgevoerdeHandelingen voegOverigeHandelingAanAfspraak(long afspraakid, HandelingDto handeling) {
 
         long handelingid = handelingService.createHandeling(handeling);
 

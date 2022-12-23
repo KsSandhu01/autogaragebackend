@@ -1,5 +1,6 @@
 package com.example.autogaragebackend.controller;
 
+import com.example.autogaragebackend.dto.KlantDto;
 import com.example.autogaragebackend.model.Klant;
 import com.example.autogaragebackend.service.KlantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class KlantController {
         return ResponseEntity.ok().body(klantService.getKlantById(id));
     }
     @PostMapping(value = "")
-    public ResponseEntity<URI> createKlant(@RequestBody Klant klant) {
+    public ResponseEntity<URI> createKlant(@RequestBody KlantDto klant) {
         long newId = klantService.createKlant(klant);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -39,13 +40,13 @@ public class KlantController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> updateKlant(@PathVariable("id") long id, @RequestBody Klant klant) {
+    public ResponseEntity<Object> updateKlant(@PathVariable("id") long id, @RequestBody KlantDto klant) {
         klantService.updateKlant(id, klant);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping(value = "/{id}")
-    public ResponseEntity<Object> deelUpdateKlant(@PathVariable("id") long id, @RequestBody Map<String, String> fields) {
+    public ResponseEntity<Object> deelUpdateKlant(@PathVariable("id") long id, @RequestBody KlantDto fields) {
         klantService.deelUpdateKlant(id, fields);
         return ResponseEntity.noContent().build();
     }

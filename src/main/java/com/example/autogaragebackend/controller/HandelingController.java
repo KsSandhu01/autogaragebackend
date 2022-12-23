@@ -1,6 +1,7 @@
 package com.example.autogaragebackend.controller;
 
 
+import com.example.autogaragebackend.dto.HandelingDto;
 import com.example.autogaragebackend.model.Handeling;
 import com.example.autogaragebackend.service.HandelingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class HandelingController {
     }
 
     @PostMapping(value = "")
-    public ResponseEntity<URI> createHandeling(@RequestBody Handeling handeling) {
+    public ResponseEntity<URI> createHandeling(@RequestBody HandelingDto handeling) {
         long newId = handelingService.createHandeling(handeling);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -41,13 +42,13 @@ public class HandelingController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> updateHandeling(@PathVariable("id") long id, @RequestBody Handeling handeling) {
+    public ResponseEntity<Object> updateHandeling(@PathVariable("id") long id, @RequestBody HandelingDto handeling) {
         handelingService.updateHandeling(id, handeling);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping(value = "/{id}")
-    public ResponseEntity<Object> updateDeelVanHandeling(@PathVariable("id") long id, @RequestBody Map<String, String> velden) {
+    public ResponseEntity<Object> updateDeelVanHandeling(@PathVariable("id") long id, @RequestBody HandelingDto velden) {
         handelingService.updateDeelVanHandeling(id, velden);
         return ResponseEntity.noContent().build();
     }

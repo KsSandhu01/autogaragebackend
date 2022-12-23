@@ -1,5 +1,6 @@
 package com.example.autogaragebackend.controller;
 
+import com.example.autogaragebackend.dto.MedewerkerDto;
 import com.example.autogaragebackend.model.Medewerker;
 import com.example.autogaragebackend.service.MedewerkerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class MedewerkerController {
     }
 
     @PostMapping(value = "")
-    public ResponseEntity<URI> createMedewerker(@RequestBody Medewerker medewerker) {
+    public ResponseEntity<URI> createMedewerker(@RequestBody MedewerkerDto medewerker) {
         long newId = medewerkerService.createMedewerker(medewerker);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -40,14 +41,15 @@ public class MedewerkerController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> updateMedewerker(@PathVariable("id") long id, @RequestBody Medewerker medewerker) {
+    public ResponseEntity<Object> updateMedewerker(@PathVariable("id") long id, @RequestBody MedewerkerDto medewerker) {
         medewerkerService.updateMedewerker(id, medewerker);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping(value = "/{id}")
-    public ResponseEntity<Object> updateDeelVanMedewerker(@PathVariable("id") long id, @RequestBody Map<String, String> fields) {
-        medewerkerService.updateDeelVanMedewerker(id, fields);
+    @PatchMapping
+    public ResponseEntity<Object> updateDeelVanMedewerker(
+            @RequestBody MedewerkerDto fields) {
+        medewerkerService.updateDeelVanMedewerker( fields);
         return ResponseEntity.noContent().build();
     }
 

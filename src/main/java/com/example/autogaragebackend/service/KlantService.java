@@ -1,5 +1,6 @@
 package com.example.autogaragebackend.service;
 
+import com.example.autogaragebackend.dto.KlantDto;
 import com.example.autogaragebackend.model.Klant;
 import org.springframework.stereotype.Service;
 
@@ -9,11 +10,11 @@ import java.util.Optional;
 
 @Service
 public interface KlantService {
-    public abstract long createKlant(Klant klant);
+    public abstract long createKlant(KlantDto klant);
 
-    public abstract void updateKlant(long id, Klant klant);
+    public abstract void updateKlant(long id, KlantDto klant);
 
-    public abstract void deelUpdateKlant(long id, Map<String, String> fields);
+    public abstract void deelUpdateKlant(long id, KlantDto fields);
 
     public abstract void deleteKlant(long id);
 

@@ -1,6 +1,7 @@
 package com.example.autogaragebackend.controller;
 
 
+import com.example.autogaragebackend.dto.HandelingDto;
 import com.example.autogaragebackend.enums.AfspraakStatus;
 import com.example.autogaragebackend.model.*;
 import com.example.autogaragebackend.service.AfspraakService;
@@ -14,11 +15,10 @@ import java.util.List;
 @RequestMapping(value="/v1/afspraak")
 public class AfspraakController {
 
-
     @Autowired
-    AfspraakService afspraakService;
+    private AfspraakService afspraakService;
 
-    @PostMapping("/createAfspraak/{klantid}/{autoid}")
+    @GetMapping("/createAfspraak/{klantid}/{autoid}")
     public ResponseEntity<Afspraak> createAfspraak(@PathVariable("klantid") long id, @PathVariable("autoid") long autoid) {
         return ResponseEntity.ok().body(afspraakService.createAfspraak(id, autoid));
     }
@@ -33,13 +33,13 @@ public class AfspraakController {
         return ResponseEntity.ok().body(afspraakService.getAllAfspraken());
     }
 
-    @PostMapping("/voegHandeling/{afspraakid}/{handelingid}")
+    @GetMapping("/voegHandeling/{afspraakid}/{handelingid}")
     public ResponseEntity<UitgevoerdeHandelingen> addHandeling(@PathVariable("afspraakid") long id, @PathVariable("handelingid") long handelingid) {
         return ResponseEntity.ok().body(afspraakService.voegHandelingAanAfspraak(id, handelingid));
     }
 
     @PostMapping("/voegOverigeHandeling/{afspraakid}")
-    public ResponseEntity<UitgevoerdeHandelingen> addOverigeHandeling(@PathVariable("afspraakid") long id, @RequestBody Handeling handeling) {
+    public ResponseEntity<UitgevoerdeHandelingen> addOverigeHandeling(@PathVariable("afspraakid") long id, @RequestBody HandelingDto handeling) {
         return ResponseEntity.ok().body(afspraakService.voegOverigeHandelingAanAfspraak(id, handeling));
     }
 
@@ -67,6 +67,4 @@ public class AfspraakController {
     public ResponseEntity<List<Afspraak>> fetchByKlantEnStatus(@PathVariable("klantid") long id, @PathVariable("status") String status) {
         return ResponseEntity.ok().body(afspraakService.fetchByKlantEnStatus(id, status));
     }
-
-
 }

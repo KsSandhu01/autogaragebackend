@@ -1,6 +1,8 @@
 package com.example.autogaragebackend.service.impl;
 
+import com.example.autogaragebackend.dto.OnderdeelDto;
 import com.example.autogaragebackend.exception.ResourceNotFoundException;
+import com.example.autogaragebackend.mapper.OnderdeelMapper;
 import com.example.autogaragebackend.model.Onderdeel;
 import com.example.autogaragebackend.repository.OnderdeelRepository;
 import com.example.autogaragebackend.service.OnderdeelService;
@@ -17,14 +19,17 @@ public class OnderdeelServiceImpl implements OnderdeelService {
     @Autowired
     private OnderdeelRepository onderdeelRepository;
 
+    @Autowired
+    private OnderdeelMapper onderdeelMapper;
     @Override
-    public long createOnderdeel(Onderdeel onderdeel) {
-        Onderdeel onderdeel1 = onderdeelRepository.save(onderdeel);
+    public long createOnderdeel(OnderdeelDto onderdeel) {
+        Onderdeel entity = onderdeelMapper.map(onderdeel);
+        Onderdeel onderdeel1 = onderdeelRepository.save(entity);
         return onderdeel1.getId();
     }
 
     @Override
-    public void updateOnderdeel(long id, Onderdeel onderdeel) {
+    public void updateOnderdeel(long id, OnderdeelDto onderdeel) {
         if (!onderdeelRepository.existsById(id)) throw new ResourceNotFoundException();
         Onderdeel bestaandeOnderdeel = onderdeelRepository.findById(id).get();
         bestaandeOnderdeel.setNaam(onderdeel.getNaam());
@@ -35,23 +40,24 @@ public class OnderdeelServiceImpl implements OnderdeelService {
     }
 
     @Override
-    public void updateDeelVanOnderdeel(long id, Map<String, String> velden) {
+    public void updateDeelVanOnderdeel(long id, OnderdeelDto velden) {
         if (!onderdeelRepository.existsById(id)) throw new ResourceNotFoundException();
         Onderdeel onderdeel = onderdeelRepository.findById(id).get();
-        for (String veld : velden.keySet()) {
-            switch (veld.toLowerCase()) {
-                case "naam":
-                    onderdeel.setNaam((String) velden.get(veld));
-                    break;
-                case "prijs":
-                    onderdeel.setPrijs((String) velden.get(veld));
-                    break;
-                case "voorraad":
-                    onderdeel.setVoorraad((String) velden.get(veld));
-                    break;
-
-            }
-        }
+        onderdeelMapper.update(onderdeel,velden);
+//        for (String veld : velden.keySet()) {
+//            switch (veld.toLowerCase()) {
+//                case "naam":
+//                    onderdeel.setNaam((String) velden.get(veld));
+//                    break;
+//                case "prijs":
+//                    onderdeel.setPrijs((String) velden.get(veld));
+//                    break;
+//                case "voorraad":
+//                    onderdeel.setVoorraad((String) velden.get(veld));
+//                    break;
+//
+//            }
+//        }
         onderdeelRepository.save(onderdeel);
     }
 

@@ -1,10 +1,17 @@
 package com.example.autogaragebackend.model;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.text.DecimalFormat;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Handeling {
 
     @Id

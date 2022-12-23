@@ -1,5 +1,7 @@
 package com.example.autogaragebackend.service.impl;
 
+import com.example.autogaragebackend.dto.AutoDto;
+import com.example.autogaragebackend.dto.AutoMapper;
 import com.example.autogaragebackend.exception.ResourceNotFoundException;
 import com.example.autogaragebackend.model.Klant;
 import com.example.autogaragebackend.model.Auto;
@@ -33,23 +35,28 @@ public class AutoServiceImpl implements AutoService {
     @Autowired
     private KlantService klantService;
 
+    @Autowired
+    private AutoMapper autoMapper;
     @Override
-    public long createAuto(Auto auto) {
+    public long createAuto(AutoDto dto) {
+        Auto auto= autoMapper.map(dto);
         Auto auto1 = autoRepository.save(auto);
         return auto.getId();
     }
 
     @Override
-    public long createAutoMetKlant(Auto auto, long klantId) {
+    public long createAutoMetKlant(AutoDto dto, long klantId) {
         Klant klant = klantService.getKlantById(klantId).get();
+        Auto auto= autoMapper.map(dto);
         auto.setKlant(klant);
         Auto auto1 = autoRepository.save(auto);
         return auto1.getId();
     }
 
     @Override
-    public long createAutometBestandEnKlant(Auto auto, MultipartFile file, long klantId) {
+    public long createAutometBestandEnKlant(AutoDto dto, MultipartFile file, long klantId) {
         Klant klant = klantService.getKlantById(klantId).get();
+        Auto auto = autoMapper.map(dto);
         auto.setKlant(klant);
 
         Blob blob = null;
@@ -75,7 +82,8 @@ public class AutoServiceImpl implements AutoService {
     static String bestandLocatie = "C:" + File.separator + "Autogarage" + File.separator;
 
     @Override
-    public long createAutoMetBestand(Auto auto, MultipartFile file) {
+    public long createAutoMetBestand(AutoDto dto, MultipartFile file) {
+        Auto auto = autoMapper.map(dto);
         Auto auto1 = autoRepository.save(auto);
         auto1.setBestandLocatie(bestandLocatie + auto1.getId() + "_" + file.getOriginalFilename());
         try {
@@ -88,7 +96,8 @@ public class AutoServiceImpl implements AutoService {
 
 
     @Override
-    public long createAutoMetBestandIndb(Auto auto, MultipartFile bestand) {
+    public long createAutoMetBestandIndb(AutoDto dto, MultipartFile bestand) {
+        Auto auto = autoMapper.map(dto);
         Blob blob = null;
         byte[] by = null;
         try {
@@ -107,7 +116,7 @@ public class AutoServiceImpl implements AutoService {
     }
 
     @Override
-    public void updateAuto(long id, Auto auto) {
+    public void updateAuto(long id, AutoDto auto) {
         if (!autoRepository.existsById(id)) throw new ResourceNotFoundException();
         Auto bestaandeAuto = autoRepository.findById(id).get();
         bestaandeAuto.setKenteken(auto.getKenteken());
@@ -121,31 +130,32 @@ public class AutoServiceImpl implements AutoService {
     }
 
     @Override
-    public void deelUpdateAuto(long id, Map<String, String> velden) {
+    public void deelUpdateAuto(long id, AutoDto velden) {
         if (!autoRepository.existsById(id)) throw new ResourceNotFoundException();
         Auto auto = autoRepository.findById(id).get();
-        for (String field : velden.keySet()) {
-            switch (field.toLowerCase()) {
-                case "kenteken":
-                    auto.setKenteken((String) velden.get(field));
-                    break;
-                case "merk":
-                    auto.setMerk((String) velden.get(field));
-                    break;
-                case "model":
-                    auto.setModel((String) velden.get(field));
-                    break;
-                case "kmstand":
-                    auto.setKmStand((String) velden.get(field));
-                    break;
-                case "bouwjaar":
-                    auto.setBouwJaar((String) velden.get(field));
-                    break;
-                case "kleur":
-                    auto.setKleur((String) velden.get(field));
-                    break;
-            }
-        }
+        autoMapper.update(auto,velden);
+//        for (String field : velden.keySet()) {
+//            switch (field.toLowerCase()) {
+//                case "kenteken":
+//                    auto.setKenteken((String) velden.get(field));
+//                    break;
+//                case "merk":
+//                    auto.setMerk((String) velden.get(field));
+//                    break;
+//                case "model":
+//                    auto.setModel((String) velden.get(field));
+//                    break;
+//                case "kmstand":
+//                    auto.setKmStand((String) velden.get(field));
+//                    break;
+//                case "bouwjaar":
+//                    auto.setBouwJaar((String) velden.get(field));
+//                    break;
+//                case "kleur":
+//                    auto.setKleur((String) velden.get(field));
+//                    break;
+//            }
+//        }
         autoRepository.save(auto);
     }
 

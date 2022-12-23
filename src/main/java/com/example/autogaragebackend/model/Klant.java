@@ -1,9 +1,16 @@
 package com.example.autogaragebackend.model;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Klant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

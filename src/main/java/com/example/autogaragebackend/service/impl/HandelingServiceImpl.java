@@ -1,6 +1,8 @@
 package com.example.autogaragebackend.service.impl;
 
+import com.example.autogaragebackend.dto.HandelingDto;
 import com.example.autogaragebackend.exception.ResourceNotFoundException;
+import com.example.autogaragebackend.mapper.HandelingMapper;
 import com.example.autogaragebackend.model.Handeling;
 import com.example.autogaragebackend.repository.HandelingRepository;
 import com.example.autogaragebackend.service.HandelingService;
@@ -16,15 +18,20 @@ public class HandelingServiceImpl implements HandelingService {
 
     @Autowired
     private HandelingRepository handelingRepository;
+    @Autowired
+    private HandelingMapper handelingMapper;
+
 
     @Override
-    public long createHandeling(Handeling handeling) {
-        Handeling handeling1 = handelingRepository.save(handeling);
-        return handeling1.getId();
+    public long createHandeling(HandelingDto handeling) {
+
+        Handeling handeling1 = handelingMapper.map(handeling);
+
+        return handelingRepository.save(handeling1).getId();
     }
 
     @Override
-    public void updateHandeling(long id, Handeling handeling) {
+    public void updateHandeling(long id, HandelingDto handeling) {
         if (!handelingRepository.existsById(id)) throw new ResourceNotFoundException();
         Handeling bestaandeHandeling = handelingRepository.findById(id).get();
         bestaandeHandeling.setNaam(handeling.getNaam());
@@ -34,21 +41,23 @@ public class HandelingServiceImpl implements HandelingService {
     }
 
     @Override
-    public void updateDeelVanHandeling(long id, Map<String, String> velden) {
+    public void updateDeelVanHandeling(long id, HandelingDto velden) {
+
         if (!handelingRepository.existsById(id)) throw new ResourceNotFoundException();
         Handeling handeling = handelingRepository.findById(id).get();
-        for (String veld : velden.keySet()) {
-            switch (veld.toLowerCase()) {
-                case "naam":
-                    handeling.setNaam((String) velden.get(veld));
-                    break;
-                case "prijs":
-                    handeling.setPrijs((String) velden.get(veld));
-                    break;
-
-
-            }
-        }
+        handelingMapper.update(velden,handeling);
+//        for (String veld : velden.keySet()) {
+//            switch (veld.toLowerCase()) {
+//                case "naam":
+//                    handeling.setNaam((String) velden.get(veld));
+//                    break;
+//                case "prijs":
+//                    handeling.setPrijs((String) velden.get(veld));
+//                    break;
+//
+//
+//            }
+//        }
         handelingRepository.save(handeling);
     }
 

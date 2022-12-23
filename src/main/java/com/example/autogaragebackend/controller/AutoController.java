@@ -1,5 +1,6 @@
 package com.example.autogaragebackend.controller;
 
+import com.example.autogaragebackend.dto.AutoDto;
 import com.example.autogaragebackend.model.Auto;
 import com.example.autogaragebackend.service.AutoService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -37,7 +38,7 @@ public class AutoController {
     }
 
     @PostMapping(value = "")
-    public ResponseEntity<URI> createAuto(@RequestBody Auto auto) {
+    public ResponseEntity<URI> createAuto(@RequestBody AutoDto auto) {
         long newId = autoService.createAuto(auto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -47,7 +48,7 @@ public class AutoController {
     }
 
     @PostMapping(value = "/createAutoMetKlant/{klantid}")
-    public ResponseEntity<URI> createAutoMetKlant(@RequestBody Auto auto,
+    public ResponseEntity<URI> createAutoMetKlant(@RequestBody AutoDto auto,
                                                   @PathVariable("klantid") long klantid) {
 
         long newId = autoService.createAutoMetKlant(auto, klantid);
@@ -58,18 +59,11 @@ public class AutoController {
         return ResponseEntity.created(location).body(location);
     }
 
-    @PostMapping(value = "/createAutometBestandEnKlant/{klantid}")
-    public ResponseEntity<URI> createAutometBestandEnKlant(@PathVariable("klantid") long klantid, @RequestParam("kenteken") String kenteken,
-                                                           @RequestParam("merk") String merk, @RequestParam("model") String model,
-                                                           @RequestParam("kmstand") String kmstand, @RequestParam("bouwjaar") String bouwjaar,
-                                                           @RequestParam(value = "bestand", required = false) MultipartFile bestand) {
-        Auto auto = new Auto();
-        auto.setMerk(merk);
-        auto.setKmStand(kmstand);
-        auto.setModel(model);
-        auto.setKenteken(kenteken);
-        auto.setBouwJaar(bouwjaar);
-        long newId = autoService.createAutometBestandEnKlant(auto, bestand, klantid);
+@PostMapping(value = "/createAutometBestandEnKlant/{klantid}")
+public ResponseEntity<URI> createAutometBestandEnKlant(@PathVariable("klantid") long klantid, @RequestBody AutoDto dto,
+                                                       @RequestParam(value = "bestand", required = false) MultipartFile bestand) {
+
+        long newId = autoService.createAutometBestandEnKlant(dto, bestand, klantid);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newId).toUri();
 
@@ -78,17 +72,10 @@ public class AutoController {
 
     //local opslaan
     @PostMapping(value = "/createAutoMetBestand")
-    public ResponseEntity<URI> createAutoMetBestand(@RequestParam("kenteken") String kenteken,
-                                                    @RequestParam("merk") String merk, @RequestParam("model") String model,
-                                                    @RequestParam("kmstand") String kmstand, @RequestParam("bouwjaar") String bouwjaar,
+    public ResponseEntity<URI> createAutoMetBestand(@RequestBody AutoDto dto,
                                                     @RequestParam(value = "bestand", required = false) MultipartFile bestand) {
-        Auto auto = new Auto();
-        auto.setMerk(merk);
-        auto.setKmStand(kmstand);
-        auto.setModel(model);
-        auto.setKenteken(kenteken);
-        auto.setBouwJaar(bouwjaar);
-        long newId = autoService.createAutoMetBestand(auto, bestand);
+
+        long newId = autoService.createAutoMetBestand(dto, bestand);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newId).toUri();
@@ -98,18 +85,9 @@ public class AutoController {
 
     //database opslaan
     @PostMapping(value = "/createAutoMetBestandIndb")
-    public ResponseEntity<URI> createAutoMetBestandIndb(@RequestParam("kenteken") String kenteken,
-                                                        @RequestParam("merk") String merk, @RequestParam("model") String model,
-                                                        @RequestParam("kmstand") String kmstand, @RequestParam("bouwjaar") String bouwjaar,
+    public ResponseEntity<URI> createAutoMetBestandIndb(@RequestBody AutoDto dto,
                                                         @RequestParam(value = "bestand", required = false) MultipartFile bestand) {
-        Auto auto = new Auto();
-        auto.setMerk(merk);
-        auto.setKmStand(kmstand);
-        auto.setModel(model);
-        auto.setKenteken(kenteken);
-        auto.setBouwJaar(bouwjaar);
-
-        long newId = autoService.createAutoMetBestandIndb(auto, bestand);
+        long newId = autoService.createAutoMetBestandIndb(dto, bestand);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(newId).toUri();
@@ -161,13 +139,13 @@ public class AutoController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> updateAuto(@PathVariable("id") long id, @RequestBody Auto auto) {
+    public ResponseEntity<Object> updateAuto(@PathVariable("id") long id, @RequestBody AutoDto auto) {
         autoService.updateAuto(id, auto);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping(value = "/{id}")
-    public ResponseEntity<Object> deelUpdateAuto(@PathVariable("id") long id, @RequestBody Map<String, String> velden) {
+    public ResponseEntity<Object> deelUpdateAuto(@PathVariable("id") long id, @RequestBody AutoDto velden) {
         autoService.deelUpdateAuto(id, velden);
         return ResponseEntity.noContent().build();
     }

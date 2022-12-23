@@ -36,3 +36,5 @@ insert into `handeling` (naam, prijs) values
                                           ('Achterlicht vervangen', '165'),
                                           ('Auto uitlijnen', '100');
 
+insert into `afspraak`(status, klant_id, auto_id) values
+                                            ('GEPLAND', '1','1');
