@@ -52,8 +52,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests(a->
                     a.antMatchers("/v1/auth/*").permitAll()
-                    .antMatchers("/v1/medewerkers/*").permitAll()
-//                            .hasRole("ADMINISTRATIEFMEDEWERKER")
+                    .antMatchers("/v1/medewerkers/*").hasRole("ADMINISTRATIEFMEDEWERKER")
                     .antMatchers("/v1/autos/**").hasRole("ADMINISTRATIEFMEDEWERKER")
                     .antMatchers("/v1/klanten/**").hasRole("ADMINISTRATIEFMEDEWERKER")
                     .antMatchers("/v1/onderdelen/**").hasRole("ADMINISTRATIEFMEDEWERKER")

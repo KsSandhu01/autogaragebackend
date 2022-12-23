@@ -1,4 +1,4 @@
-package com.example.autogaragebackend;
+package com.example.autogaragebackend.service;
 
 import com.example.autogaragebackend.dto.HandelingDto;
 import com.example.autogaragebackend.enums.AfspraakStatus;
