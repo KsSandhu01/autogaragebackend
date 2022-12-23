@@ -38,61 +38,61 @@ public class AutoController {
     }
 
     @PostMapping(value = "")
-    public ResponseEntity<URI> createAuto(@RequestBody AutoDto auto) {
-        long newId = autoService.createAuto(auto);
+    public ResponseEntity<Auto> createAuto(@RequestBody AutoDto auto) {
+        Auto auto1= autoService.createAuto(auto);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newId).toUri();
+                .buildAndExpand(auto1).toUri();
 
-        return ResponseEntity.created(location).body(location);
+        return ResponseEntity.status(HttpStatus.CREATED).body(auto1);
     }
 
     @PostMapping(value = "/createAutoMetKlant/{klantid}")
-    public ResponseEntity<URI> createAutoMetKlant(@RequestBody AutoDto auto,
+    public ResponseEntity<Auto> createAutoMetKlant(@RequestBody AutoDto auto,
                                                   @PathVariable("klantid") long klantid) {
 
-        long newId = autoService.createAutoMetKlant(auto, klantid);
+       Auto auto1= autoService.createAutoMetKlant(auto, klantid);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newId).toUri();
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+//                .buildAndExpand(newId).toUri();
 
-        return ResponseEntity.created(location).body(location);
+        return ResponseEntity.status(HttpStatus.CREATED).body(auto1);
     }
 
 @PostMapping(value = "/createAutometBestandEnKlant/{klantid}")
-public ResponseEntity<URI> createAutometBestandEnKlant(@PathVariable("klantid") long klantid, @RequestBody AutoDto dto,
+public ResponseEntity<Auto> createAutometBestandEnKlant(@PathVariable("klantid") long klantid, @RequestBody AutoDto dto,
                                                        @RequestParam(value = "bestand", required = false) MultipartFile bestand) {
 
-        long newId = autoService.createAutometBestandEnKlant(dto, bestand, klantid);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newId).toUri();
+        Auto auto = autoService.createAutometBestandEnKlant(dto, bestand, klantid);
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+//                .buildAndExpand(newId).toUri();
 
-        return ResponseEntity.created(location).body(location);
+        return ResponseEntity.status(HttpStatus.CREATED).body(auto);
     }
 
     //local opslaan
     @PostMapping(value = "/createAutoMetBestand")
-    public ResponseEntity<URI> createAutoMetBestand(@RequestBody AutoDto dto,
+    public ResponseEntity<Auto> createAutoMetBestand(@RequestBody AutoDto dto,
                                                     @RequestParam(value = "bestand", required = false) MultipartFile bestand) {
 
-        long newId = autoService.createAutoMetBestand(dto, bestand);
+        Auto auto =autoService.createAutoMetBestand(dto, bestand);
+//
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+//                .buildAndExpand(newId).toUri();
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newId).toUri();
-
-        return ResponseEntity.created(location).body(location);
+        return ResponseEntity.status(HttpStatus.CREATED).body(auto);
     }
 
     //database opslaan
     @PostMapping(value = "/createAutoMetBestandIndb")
-    public ResponseEntity<URI> createAutoMetBestandIndb(@RequestBody AutoDto dto,
+    public ResponseEntity<Auto> createAutoMetBestandIndb(@RequestBody AutoDto dto,
                                                         @RequestParam(value = "bestand", required = false) MultipartFile bestand) {
-        long newId = autoService.createAutoMetBestandIndb(dto, bestand);
+        Auto auto =autoService.createAutoMetBestandIndb(dto, bestand);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(newId).toUri();
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+//                .buildAndExpand(newId).toUri();
 
-        return ResponseEntity.created(location).body(location);
+        return ResponseEntity.status(HttpStatus.CREATED).body(auto);
     }
 
     @RequestMapping("/download/{autoid}")
@@ -139,15 +139,15 @@ public ResponseEntity<URI> createAutometBestandEnKlant(@PathVariable("klantid") 
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Object> updateAuto(@PathVariable("id") long id, @RequestBody AutoDto auto) {
-        autoService.updateAuto(id, auto);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Auto> updateAuto(@PathVariable("id") long id, @RequestBody AutoDto auto) {
+        Auto  auto1 = autoService.updateAuto(id, auto);
+        return ResponseEntity.ok(auto1);
     }
 
     @PatchMapping(value = "/{id}")
-    public ResponseEntity<Object> deelUpdateAuto(@PathVariable("id") long id, @RequestBody AutoDto velden) {
-        autoService.deelUpdateAuto(id, velden);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Auto> deelUpdateAuto(@PathVariable("id") long id, @RequestBody AutoDto velden) {
+        Auto auto =autoService.deelUpdateAuto(id, velden);
+        return ResponseEntity.ok(auto);
     }
 
 

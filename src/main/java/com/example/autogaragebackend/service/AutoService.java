@@ -12,14 +12,14 @@ import java.util.Optional;
 @Service
 public interface AutoService {
 
-    public abstract long createAuto(AutoDto auto);
-    public long createAutoMetKlant(AutoDto auto, long klantid);
-    public long createAutometBestandEnKlant(AutoDto auto, MultipartFile file, long klantid);
+    public abstract Auto createAuto(AutoDto auto);
+    public Auto createAutoMetKlant(AutoDto auto, long klantid);
+    public Auto createAutometBestandEnKlant(AutoDto auto, MultipartFile file, long klantid);
     public abstract String getBestandPath(long autoid);
-    public long createAutoMetBestand(AutoDto auto, MultipartFile file);
-    public long createAutoMetBestandIndb(AutoDto auto, MultipartFile file);
-    public abstract void updateAuto(long id, AutoDto auto);
-    public abstract void deelUpdateAuto(long id, AutoDto fields);
+    public Auto createAutoMetBestand(AutoDto auto, MultipartFile file);
+    public Auto createAutoMetBestandIndb(AutoDto auto, MultipartFile file);
+    public abstract Auto updateAuto(long id, AutoDto auto);
+    public abstract Auto deelUpdateAuto(long id, AutoDto fields);
     public abstract void deleteAuto(long id);
     public abstract Collection<Auto> getAutos();
     public abstract Collection<Auto> getAutosVanMerk(String merk);

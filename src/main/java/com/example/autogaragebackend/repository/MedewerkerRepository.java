@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface MedewerkerRepository extends JpaRepository<Medewerker, Long> {
 
-    public Collection<Medewerker> findAllByNaam(String naam);
-    public Collection<Medewerker> findAllByRole(String role);
-    public Optional<Medewerker> findByGebruikersnaam(String gebruikersnaam);
+     Collection<Medewerker> findAllByNaam(String naam);
+     Collection<Medewerker> findAllByRole(String role);
+     Optional<Medewerker> findByGebruikersnaam(String gebruikersnaam);
 
 }

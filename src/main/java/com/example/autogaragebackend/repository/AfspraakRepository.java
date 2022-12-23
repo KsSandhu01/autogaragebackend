@@ -8,15 +8,15 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface AfspraakRepository extends JpaRepository<Afspraak, Long> {
-    public List<Afspraak> findAllByStatus(String status);
+    List<Afspraak> findAllByStatus(String status);
 
     @Query(value = "SELECT * FROM Afspraak a WHERE a.klant_id =:id",
             nativeQuery = true)
-    public List<Afspraak> fetchByKlant(@Param("id") long id);
+     List<Afspraak> fetchByKlant(@Param("id") long id);
 
     @Query(value = "SELECT * FROM Afspraak a WHERE a.klant_id =:id and a.status=:status",
             nativeQuery = true)
-    public List<Afspraak> fetchByKlantEnStatus(@Param("id") long id, @Param("status") String status);
+    List<Afspraak> fetchByKlantEnStatus(@Param("id") long id, @Param("status") String status);
 
 }
 
