@@ -11,7 +11,6 @@ values ('john12', 'John', '$2a$10$I2j2fA2pYVT5dv4ZnLbm6uDjyCfLgn1jPpNy0spFPbQWE5
 
 
 
-
 --voeg klanten toe in databases
 insert into `klant` (email, klantnummer, naam, tel_nummer)
 values ('kawal@mail.nl', '123456', 'Dirk', '0612345678'),

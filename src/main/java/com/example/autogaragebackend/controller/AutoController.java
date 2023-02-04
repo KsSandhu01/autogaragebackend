@@ -20,6 +20,7 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
 
+
 @RestController
 @RequestMapping(value = "/v1/autos")
 public class AutoController {
