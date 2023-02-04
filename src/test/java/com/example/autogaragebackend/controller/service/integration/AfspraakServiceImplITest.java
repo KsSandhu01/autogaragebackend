@@ -1,28 +1,22 @@
-package com.example.autogaragebackend.service;
+package com.example.autogaragebackend.controller.service.integration;
 
 import com.example.autogaragebackend.dto.HandelingDto;
 import com.example.autogaragebackend.enums.AfspraakStatus;
-import com.example.autogaragebackend.model.*;
+import com.example.autogaragebackend.model.Afspraak;
+import com.example.autogaragebackend.model.GebruikteOnderdelen;
+import com.example.autogaragebackend.model.UitgevoerdeHandelingen;
 import com.example.autogaragebackend.repository.AfspraakRepository;
 import com.example.autogaragebackend.service.AfspraakService;
-import com.example.autogaragebackend.service.KlantService;
-import com.example.autogaragebackend.service.impl.KlantServiceImpl;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class AfspraakServiceImplTest {
-
+public class AfspraakServiceImplITest {
     @Autowired
     private AfspraakRepository afspraakRepository;
     @Autowired
@@ -96,18 +90,4 @@ public class AfspraakServiceImplTest {
         assertEquals(1,afspraken.size());
     }
 
-//    @Test
-//    void genereerBonTest(){
-//        Bon bon = afspraakService.genereerBon(1);
-//        assertEquals("45",bon.getTotaal());
-//        GebruikteOnderdelen gebruikteOnderdelen = afspraakService.voegOnderdeelAanAfspraak(1, 1);
-//        UitgevoerdeHandelingen uitgevoerdeHandelingen = afspraakService.voegHandelingAanAfspraak(1, 1);
-//        afspraakService.voegOnderdeelAanAfspraak(1,1);
-//        afspraakService.voegHandelingAanAfspraak(1,1);
-//        afspraakService.genereerBon(1);
-//
-//        assertEquals("45",bon.getTotaal());
-//
-//        assertNotNull(bon);
-//    }
 }

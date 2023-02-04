@@ -1,6 +1,9 @@
 package com.example.autogaragebackend.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,6 +11,9 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Afspraak  implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-package com.example.autogaragebackend.integration;
+package com.example.autogaragebackend.controller.controller;
 
 import com.example.autogaragebackend.dto.KlantDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,7 +17,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 public class KlantControllerIntegrationTest {
-
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -43,7 +42,7 @@ public class KlantControllerIntegrationTest {
         KlantDto dto = KlantDto.builder().naam("name").email("email").build();
         mockMvc.perform(post("/v1/klanten")
                         .content(mapper.writeValueAsBytes(dto))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
