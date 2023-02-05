@@ -5,22 +5,21 @@ import com.example.autogaragebackend.model.Klant;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 public interface KlantService {
-    public abstract long createKlant(KlantDto klant);
+    long createKlant(KlantDto klant);
 
-    public abstract void updateKlant(long id, KlantDto klant);
+    void updateKlant(long id, KlantDto klant);
 
-    public abstract void deelUpdateKlant(long id, KlantDto fields);
+    void deelUpdateKlant(long id, KlantDto fields);
 
-    public abstract void deleteKlant(long id);
+    void deleteKlant(long id);
 
-    public abstract Collection<Klant> getKlanten();
+    Collection<Klant> getKlanten();
 
-    public abstract Optional<Klant> getKlantById(long id);
+    Optional<Klant> getKlantById(long id);
 
-    public abstract boolean klantExistsById(long id);
+    boolean klantExistsById(long id);
 }

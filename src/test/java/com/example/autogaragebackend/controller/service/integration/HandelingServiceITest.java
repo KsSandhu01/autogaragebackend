@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 public class HandelingServiceITest {
@@ -31,20 +30,20 @@ public class HandelingServiceITest {
 
     @Test
     void updateHandelingTest() {
-        Handeling handeling = handelingRepository.findById(1l).get();
+        Handeling handeling = handelingRepository.findById(1L).get();
         assertNotNull(handeling);
         HandelingDto dto = HandelingDto.builder().naam("name").prijs("12").build();
         handelingService.updateHandeling(1, dto);
-        handeling = handelingRepository.findById(1l).get();
-        assertTrue(handeling.getNaam().equals("name"));
+        handeling = handelingRepository.findById(1L).get();
+        assertEquals("name", handeling.getNaam());
     }
 
     @Test
     void updateDeelVanHandelingTest() {
         HandelingDto dto = HandelingDto.builder().naam("name").prijs("12").build();
         handelingService.updateDeelVanHandeling(1, dto);
-        Handeling handeling = handelingRepository.findById(1l).get();
-        assertTrue(handeling.getPrijs().equals("12"));
+        Handeling handeling = handelingRepository.findById(1L).get();
+        assertEquals("12", handeling.getPrijs());
     }
 
     @Test

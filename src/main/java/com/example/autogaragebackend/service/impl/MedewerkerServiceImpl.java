@@ -7,17 +7,12 @@ import com.example.autogaragebackend.model.Medewerker;
 import com.example.autogaragebackend.repository.MedewerkerRepository;
 import com.example.autogaragebackend.service.MedewerkerService;
 
-import com.example.autogaragebackend.util.SpringUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 @Service

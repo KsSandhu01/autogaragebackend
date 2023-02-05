@@ -5,17 +5,16 @@ import com.example.autogaragebackend.model.Onderdeel;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 public interface OnderdeelService {
 
-    public abstract long createOnderdeel(OnderdeelDto onderdeel);
-    public abstract void updateOnderdeel(long id, OnderdeelDto onderdeel);
-    public abstract void updateDeelVanOnderdeel(long id, OnderdeelDto fields);
-    public abstract void deleteOnderdeel(long id);
-    public abstract Collection<Onderdeel> getOnderdelen();
-    public abstract Optional<Onderdeel> getOnderdeelById(long id);
-    public abstract boolean OnderdeelExistsById(long id);
+    long createOnderdeel(OnderdeelDto onderdeel);
+    void updateOnderdeel(long id, OnderdeelDto onderdeel);
+    void updateDeelVanOnderdeel(long id, OnderdeelDto fields);
+    void deleteOnderdeel(long id);
+    Collection<Onderdeel> getOnderdelen();
+    Optional<Onderdeel> getOnderdeelById(long id);
+    boolean OnderdeelExistsById(long id);
 }

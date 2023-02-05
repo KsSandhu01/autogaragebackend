@@ -7,7 +7,6 @@ import com.example.autogaragebackend.service.AutoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -67,14 +66,15 @@ public class AutoController {
      */
     @PostMapping(value = "/createAutoMetKlantenBestandIndb")
     public ResponseEntity<Auto> createAutoMetKlantenBestandIndb(@RequestParam(value = "auto") String autoDto,
-                                                         @RequestParam(value = "klant_id") String klantId,
-                                                         @RequestParam(value = "bestand", required = false) MultipartFile bestand) {
+                                                                @RequestParam(value = "klant_id") String klantId,
+                                                                @RequestParam(value = "bestand", required = false) MultipartFile bestand) {
         ObjectMapper mapper = new ObjectMapper();
 
-        //valideer DTO
+
         try {
             var auto = mapper.readValue(autoDto, AutoDto.class);
-            if(auto.getKenteken() == null) {
+            //valideer DTO
+            if (auto.getKenteken() == null) {
                 throw new ElementMustBePresentException("Kenteken mag niet leeg zijn");
             }
             Auto response = autoService.createAutometBestandEnKlant(auto, bestand, Long.parseLong(klantId));
@@ -121,7 +121,6 @@ public class AutoController {
         headers.add("Pragma", "no-cache");
         headers.add("Expires", "0");
 
-        //headers.setContentLength(targetStream.contentLength());
         ResponseEntity<InputStreamResource> response = new ResponseEntity<InputStreamResource>(
                 new InputStreamResource(targetStream), headers, HttpStatus.OK);
         return response;

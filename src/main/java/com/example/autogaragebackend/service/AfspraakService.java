@@ -3,21 +3,20 @@ package com.example.autogaragebackend.service;
 import com.example.autogaragebackend.dto.HandelingDto;
 import com.example.autogaragebackend.enums.AfspraakStatus;
 import com.example.autogaragebackend.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 
 public interface AfspraakService {
-    public Afspraak createAfspraak(long klantId, long autoid);
-    public Afspraak updateStatus(long afspraakid, AfspraakStatus afspraakStatus);
-    public Afspraak getAfspraak(long afspraakid);
-    public List<Afspraak> getAllAfspraken();
-    public UitgevoerdeHandelingen voegHandelingAanAfspraak(long afspraakid, long handelingid);
-    public UitgevoerdeHandelingen voegOverigeHandelingAanAfspraak(long afspraakid, HandelingDto handeling);
-    public GebruikteOnderdelen voegOnderdeelAanAfspraak(long afspraakid, long onderdeelid);
-    public List<Afspraak> fetchByStatus(String status);
-    public List<Afspraak> fetchByKlant(long klantid);
-    public List<Afspraak> fetchByKlantEnStatus(long klantid, String status);
-    public Bon genereerBon(long afspraakid);
+    Afspraak createAfspraak(long klantId, long autoid);
+    Afspraak updateStatus(long afspraakid, AfspraakStatus afspraakStatus);
+    Afspraak getAfspraak(long afspraakid);
+    List<Afspraak> getAllAfspraken();
+    UitgevoerdeHandelingen voegHandelingAanAfspraak(long afspraakid, long handelingid);
+    UitgevoerdeHandelingen voegOverigeHandelingAanAfspraak(long afspraakid, HandelingDto handeling);
+    GebruikteOnderdelen voegOnderdeelAanAfspraak(long afspraakid, long onderdeelid);
+    List<Afspraak> fetchByStatus(String status);
+    List<Afspraak> fetchByKlant(long klantid);
+    List<Afspraak> fetchByKlantEnStatus(long klantid, String status);
+    Bon genereerBon(long afspraakid);
 }

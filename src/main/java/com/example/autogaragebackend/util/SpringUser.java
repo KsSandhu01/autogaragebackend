@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.example.autogaragebackend.model.Medewerker;
 
 public class SpringUser implements UserDetails{
-    private Medewerker user;
+    private final Medewerker user;
 
     public SpringUser(Medewerker user) {
         this.user=user;

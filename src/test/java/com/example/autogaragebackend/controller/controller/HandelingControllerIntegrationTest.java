@@ -13,12 +13,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
@@ -28,8 +26,11 @@ public class HandelingControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
+        // Maak een CustomUserDetails-object aan dat de geauthenticeerde gebruiker vertegenwoordigt
         CustomUserDetails userDetails = new CustomUserDetails(Medewerker.builder().naam("naam").role(Role.ROLE_ADMINISTRATIEFMEDEWERKER).id(1).build());
+        // Maak een authenticatie-object met de CustomUserDetails als hoofdpersoon
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        // Zet het authenticatie-object in de security context
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
     @Test

@@ -32,20 +32,20 @@ public class AfspraakServiceImplITest {
 
     @Test
     void updateStatusTest(){
-        Afspraak afspraak = afspraakRepository.findById(1l).get();
+        Afspraak afspraak = afspraakRepository.findById(1L).get();
         assertNotNull(afspraak);
-        assertTrue(afspraak.getStatus().equals(AfspraakStatus.GEPLAND.toString()));
+        assertEquals(afspraak.getStatus(), AfspraakStatus.GEPLAND.toString());
 
         afspraakService.updateStatus(1,AfspraakStatus.NIETUITVOEREN);
-        afspraak = afspraakRepository.findById(1l).get();
-        assertTrue(afspraak.getStatus().equals(AfspraakStatus.NIETUITVOEREN.toString()));
+        afspraak = afspraakRepository.findById(1L).get();
+        assertEquals(afspraak.getStatus(), AfspraakStatus.NIETUITVOEREN.toString());
     }
 
     @Test
     void getAfspraakTest(){
         Afspraak afspraken = afspraakService.getAfspraak(1);
         assertNotNull(afspraken);
-        assertTrue(afspraken.getStatus().equals(AfspraakStatus.GEPLAND.toString()));
+        assertEquals(afspraken.getStatus(), AfspraakStatus.GEPLAND.toString());
 
     }
     @Test

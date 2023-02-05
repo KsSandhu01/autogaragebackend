@@ -20,7 +20,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Blob;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.apache.naming.SelectorContext.prefix;

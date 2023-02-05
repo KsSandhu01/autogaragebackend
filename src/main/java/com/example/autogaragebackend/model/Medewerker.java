@@ -3,7 +3,6 @@ package com.example.autogaragebackend.model;
 import com.example.autogaragebackend.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 

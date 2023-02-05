@@ -8,10 +8,8 @@ import com.example.autogaragebackend.repository.OnderdeelRepository;
 import com.example.autogaragebackend.service.OnderdeelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -45,7 +43,7 @@ public class OnderdeelServiceImpl implements OnderdeelService {
     @Override
     public void updateDeelVanOnderdeel(long id, OnderdeelDto velden) {
         if (!onderdeelRepository.existsById(id)) throw new ResourceNotFoundException();
-        Onderdeel onderdeel = onderdeelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Onderdeel niet gevonden met deze id : " + id));;
+        Onderdeel onderdeel = onderdeelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Onderdeel niet gevonden met deze id : " + id));
         onderdeelMapper.update(onderdeel, velden);
 
         onderdeelRepository.save(onderdeel);

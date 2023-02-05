@@ -6,12 +6,10 @@ import com.example.autogaragebackend.mapper.KlantMapper;
 import com.example.autogaragebackend.model.Klant;
 import com.example.autogaragebackend.repository.KlantRepository;
 import com.example.autogaragebackend.service.KlantService;
-import com.example.autogaragebackend.service.KlantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
