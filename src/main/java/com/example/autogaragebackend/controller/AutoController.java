@@ -1,11 +1,13 @@
 package com.example.autogaragebackend.controller;
 
 import com.example.autogaragebackend.dto.AutoDto;
+import com.example.autogaragebackend.exception.ElementMustBePresentException;
 import com.example.autogaragebackend.model.Auto;
 import com.example.autogaragebackend.service.AutoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URI;
 import java.util.Collection;
-import java.util.Map;
 
 
 @RestController
@@ -69,9 +70,15 @@ public class AutoController {
                                                          @RequestParam(value = "klant_id") String klantId,
                                                          @RequestParam(value = "bestand", required = false) MultipartFile bestand) {
         ObjectMapper mapper = new ObjectMapper();
+
+        //valideer DTO
         try {
-            Auto auto = autoService.createAutometBestandEnKlant(mapper.readValue(autoDto, AutoDto.class), bestand, Long.parseLong(klantId));
-            return ResponseEntity.status(HttpStatus.CREATED).body(auto);
+            var auto = mapper.readValue(autoDto, AutoDto.class);
+            if(auto.getKenteken() == null) {
+                throw new ElementMustBePresentException("Kenteken mag niet leeg zijn");
+            }
+            Auto response = autoService.createAutometBestandEnKlant(auto, bestand, Long.parseLong(klantId));
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (JsonProcessingException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

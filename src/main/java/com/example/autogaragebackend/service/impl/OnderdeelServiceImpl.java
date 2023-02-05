@@ -8,6 +8,7 @@ import com.example.autogaragebackend.repository.OnderdeelRepository;
 import com.example.autogaragebackend.service.OnderdeelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.Map;
@@ -21,6 +22,7 @@ public class OnderdeelServiceImpl implements OnderdeelService {
 
     @Autowired
     private OnderdeelMapper onderdeelMapper;
+
     @Override
     public long createOnderdeel(OnderdeelDto onderdeel) {
         Onderdeel entity = onderdeelMapper.map(onderdeel);
@@ -31,7 +33,7 @@ public class OnderdeelServiceImpl implements OnderdeelService {
     @Override
     public void updateOnderdeel(long id, OnderdeelDto onderdeel) {
         if (!onderdeelRepository.existsById(id)) throw new ResourceNotFoundException();
-        Onderdeel bestaandeOnderdeel = onderdeelRepository.findById(id).get();
+        Onderdeel bestaandeOnderdeel = onderdeelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Onderdeel niet gevonden met deze id : " + id));
         bestaandeOnderdeel.setNaam(onderdeel.getNaam());
         bestaandeOnderdeel.setPrijs(onderdeel.getPrijs());
         bestaandeOnderdeel.setVoorraad(onderdeel.getVoorraad());
@@ -43,21 +45,8 @@ public class OnderdeelServiceImpl implements OnderdeelService {
     public void updateDeelVanOnderdeel(long id, OnderdeelDto velden) {
         if (!onderdeelRepository.existsById(id)) throw new ResourceNotFoundException();
         Onderdeel onderdeel = onderdeelRepository.findById(id).get();
-        onderdeelMapper.update(onderdeel,velden);
-//        for (String veld : velden.keySet()) {
-//            switch (veld.toLowerCase()) {
-//                case "naam":
-//                    onderdeel.setNaam((String) velden.get(veld));
-//                    break;
-//                case "prijs":
-//                    onderdeel.setPrijs((String) velden.get(veld));
-//                    break;
-//                case "voorraad":
-//                    onderdeel.setVoorraad((String) velden.get(veld));
-//                    break;
-//
-//            }
-//        }
+        onderdeelMapper.update(onderdeel, velden);
+
         onderdeelRepository.save(onderdeel);
     }
 

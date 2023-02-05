@@ -45,23 +45,7 @@ public class KlantServiceImpl implements KlantService {
         if (!klantRepository.existsById(id)) throw new ResourceNotFoundException();
         Klant klant = klantRepository.findById(id).get();
         klantMapper.update(klant,dto);
-//        for (String field : velden.keySet()) {
-//            switch (field.toLowerCase()) {
-//                case "klantnummer":
-//                    klant.setKlantnummer((String) velden.get(field));
-//                    break;
-//                case "naam":
-//                    klant.setNaam((String) velden.get(field));
-//                    break;
-//                case "telNummer":
-//                    klant.setTelNummer((String) velden.get(field));
-//                    break;
-//                case "email":
-//                    klant.setEmail((String) velden.get(field));
-//                    break;
-//
-//            }
-//        }
+
         klantRepository.save(klant);
     }
 

@@ -36,7 +36,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                                 )
                                 .permitAll()
                                 .anyRequest()
-                                .authenticated()
+                                .permitAll()
                 );
 
         // JWT Validation Configuration

@@ -46,18 +46,7 @@ public class HandelingServiceImpl implements HandelingService {
         if (!handelingRepository.existsById(id)) throw new ResourceNotFoundException();
         Handeling handeling = handelingRepository.findById(id).get();
         handelingMapper.update(velden,handeling);
-//        for (String veld : velden.keySet()) {
-//            switch (veld.toLowerCase()) {
-//                case "naam":
-//                    handeling.setNaam((String) velden.get(veld));
-//                    break;
-//                case "prijs":
-//                    handeling.setPrijs((String) velden.get(veld));
-//                    break;
-//
-//
-//            }
-//        }
+
         handelingRepository.save(handeling);
     }
 

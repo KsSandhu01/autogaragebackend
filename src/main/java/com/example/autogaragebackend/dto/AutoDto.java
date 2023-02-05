@@ -1,5 +1,6 @@
 package com.example.autogaragebackend.dto;
 
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
