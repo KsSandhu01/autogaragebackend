@@ -56,7 +56,7 @@ public class AfspraakController {
     }
 
     @PutMapping("/updatestatus/{afspraakid}/{status}")
-    @PreAuthorize("hasAnyAuthority('ROLE_MONTEUR', 'ROLE_KASSAMEDEWERKER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_MONTEUR')")
     public ResponseEntity<Afspraak> updateAfspraak(@PathVariable("afspraakid") long id, @PathVariable("status") AfspraakStatus status) {
         return ResponseEntity.ok().body(afspraakService.updateStatus(id, status));
     }

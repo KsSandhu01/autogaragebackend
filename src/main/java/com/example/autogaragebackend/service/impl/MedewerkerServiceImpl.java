@@ -95,12 +95,4 @@ public class MedewerkerServiceImpl implements MedewerkerService {
         return passwordEncoder.encode(wachtwoord);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String gebruikersnaam) throws UsernameNotFoundException {
-        Optional<Medewerker> userOptional = medewerkerRepository.findByGebruikersnaam(gebruikersnaam);
-
-        Medewerker user=userOptional
-                .orElseThrow(()-> new UsernameNotFoundException("Username Not Found"));
-        return new SpringUser(user);
-    }
 }

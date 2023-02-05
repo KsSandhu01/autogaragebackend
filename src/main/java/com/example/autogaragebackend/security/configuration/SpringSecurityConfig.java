@@ -32,7 +32,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests(configurer ->
                         configurer
                                 .antMatchers(
-                                        "/v1/auth/login"
+                                        "/v1/login"
                                 )
                                 .permitAll()
                                 .anyRequest()

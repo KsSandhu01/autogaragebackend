@@ -57,48 +57,26 @@ public class AutoController {
                                                    @PathVariable("klantid") long klantid) {
 
         Auto auto1 = autoService.createAutoMetKlant(auto, klantid);
-
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-//                .buildAndExpand(newId).toUri();
-
         return ResponseEntity.status(HttpStatus.CREATED).body(auto1);
     }
 
-    @PostMapping(value = "/createAutometBestandEnKlant/{klantid}")
-    public ResponseEntity<Auto> createAutometBestandEnKlant(@PathVariable("klantid") long klantid, @RequestBody AutoDto dto,
-                                                            @RequestParam(value = "bestand", required = false) MultipartFile bestand) {
 
-        Auto auto = autoService.createAutometBestandEnKlant(dto, bestand, klantid);
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-//                .buildAndExpand(newId).toUri();
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(auto);
-    }
-
-    //local opslaan
-    @PostMapping(value = "/createAutoMetBestandIndb")
-    public ResponseEntity<Auto> createAutoMetBestandIndb(@RequestParam(value = "auto") String autoDto,
+    /**
+     * Met deze methode wordt de auto met bestand en klant toegevoegd in de database
+     */
+    @PostMapping(value = "/createAutoMetKlantenBestandIndb")
+    public ResponseEntity<Auto> createAutoMetKlantenBestandIndb(@RequestParam(value = "auto") String autoDto,
+                                                         @RequestParam(value = "klant_id") String klantId,
                                                          @RequestParam(value = "bestand", required = false) MultipartFile bestand) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            Auto auto = autoService.createAutoMetBestandIndb(mapper.readValue(autoDto, AutoDto.class), bestand);
+            Auto auto = autoService.createAutometBestandEnKlant(mapper.readValue(autoDto, AutoDto.class), bestand, Long.parseLong(klantId));
             return ResponseEntity.status(HttpStatus.CREATED).body(auto);
         } catch (JsonProcessingException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
-    //database opslaan
-    @PostMapping(value = "/createAutoMetBestandIndb")
-    public ResponseEntity<Auto> createAutoMetBestandIndb(@RequestBody AutoDto dto,
-                                                         @RequestParam(value = "bestand", required = false) MultipartFile bestand) {
-        Auto auto = autoService.createAutoMetBestandIndb(dto, bestand);
-
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-//                .buildAndExpand(newId).toUri();
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(auto);
-    }
 
     @RequestMapping("/download/{autoid}")
     public Auto download(@PathVariable("autoid")

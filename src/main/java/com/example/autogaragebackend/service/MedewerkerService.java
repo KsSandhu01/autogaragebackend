@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public interface MedewerkerService  extends UserDetailsService {
+public interface MedewerkerService {
 
     public abstract long createMedewerker(MedewerkerDto medewerker);
     public abstract void updateMedewerker(long id, MedewerkerDto medewerker);
