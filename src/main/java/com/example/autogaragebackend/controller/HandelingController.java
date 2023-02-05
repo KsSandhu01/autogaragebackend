@@ -6,6 +6,7 @@ import com.example.autogaragebackend.model.Handeling;
 import com.example.autogaragebackend.service.HandelingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/v1/handelingen")
+@PreAuthorize("hasAuthority('ROLE_ADMINISTRATIEFMEDEWERKER')")
 public class HandelingController {
 
     @Autowired

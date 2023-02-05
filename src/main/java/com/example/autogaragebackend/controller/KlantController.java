@@ -5,6 +5,7 @@ import com.example.autogaragebackend.model.Klant;
 import com.example.autogaragebackend.service.KlantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -15,12 +16,14 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/v1/klanten")
+@PreAuthorize("hasAuthority('ROLE_ADMINISTRATIEFMEDEWERKER')")
 public class KlantController {
 
     @Autowired
     private KlantService klantService;
 
     @GetMapping(value = "")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMINISTRATIEFMEDEWERKER', 'ROLE_MONTEUR')")
     public ResponseEntity<Collection<Klant>> getKlanten() {
         return ResponseEntity.ok().body(klantService.getKlanten());
     }
