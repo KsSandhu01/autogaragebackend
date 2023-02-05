@@ -33,7 +33,7 @@ public class HandelingServiceImpl implements HandelingService {
     @Override
     public void updateHandeling(long id, HandelingDto handeling) {
         if (!handelingRepository.existsById(id)) throw new ResourceNotFoundException();
-        Handeling bestaandeHandeling = handelingRepository.findById(id).get();
+        Handeling bestaandeHandeling = handelingRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Handeling niet gevonden met deze id : " + id));
         bestaandeHandeling.setNaam(handeling.getNaam());
         bestaandeHandeling.setPrijs(handeling.getPrijs());
 
@@ -44,7 +44,7 @@ public class HandelingServiceImpl implements HandelingService {
     public void updateDeelVanHandeling(long id, HandelingDto velden) {
 
         if (!handelingRepository.existsById(id)) throw new ResourceNotFoundException();
-        Handeling handeling = handelingRepository.findById(id).get();
+        Handeling handeling = handelingRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Handeling niet gevonden met deze id : " + id));
         handelingMapper.update(velden,handeling);
 
         handelingRepository.save(handeling);

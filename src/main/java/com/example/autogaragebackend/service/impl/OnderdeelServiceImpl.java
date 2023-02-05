@@ -33,7 +33,8 @@ public class OnderdeelServiceImpl implements OnderdeelService {
     @Override
     public void updateOnderdeel(long id, OnderdeelDto onderdeel) {
         if (!onderdeelRepository.existsById(id)) throw new ResourceNotFoundException();
-        Onderdeel bestaandeOnderdeel = onderdeelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Onderdeel niet gevonden met deze id : " + id));
+        Onderdeel bestaandeOnderdeel = onderdeelRepository.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("Onderdeel niet gevonden met deze id : " + id));
         bestaandeOnderdeel.setNaam(onderdeel.getNaam());
         bestaandeOnderdeel.setPrijs(onderdeel.getPrijs());
         bestaandeOnderdeel.setVoorraad(onderdeel.getVoorraad());
@@ -44,7 +45,7 @@ public class OnderdeelServiceImpl implements OnderdeelService {
     @Override
     public void updateDeelVanOnderdeel(long id, OnderdeelDto velden) {
         if (!onderdeelRepository.existsById(id)) throw new ResourceNotFoundException();
-        Onderdeel onderdeel = onderdeelRepository.findById(id).get();
+        Onderdeel onderdeel = onderdeelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Onderdeel niet gevonden met deze id : " + id));;
         onderdeelMapper.update(onderdeel, velden);
 
         onderdeelRepository.save(onderdeel);

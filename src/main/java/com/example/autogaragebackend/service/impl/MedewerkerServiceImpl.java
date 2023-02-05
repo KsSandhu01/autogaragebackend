@@ -40,7 +40,7 @@ public class MedewerkerServiceImpl implements MedewerkerService {
     public void updateMedewerker(long id, MedewerkerDto medewerker) {
         if (!medewerkerRepository.existsById(id))
             throw new ResourceNotFoundException();
-        Medewerker bestaandeMedewerker = medewerkerRepository.findById(id).get();
+        Medewerker bestaandeMedewerker = medewerkerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Medewerker niet gevonden met deze id : " + id));
         bestaandeMedewerker.setNaam(medewerker.getNaam());
         bestaandeMedewerker.setGebruikersnaam(medewerker.getGebruikersnaam());
         bestaandeMedewerker.setWachtwoord(medewerker.getWachtwoord());
@@ -52,7 +52,7 @@ public class MedewerkerServiceImpl implements MedewerkerService {
     @Override
     public void updateDeelVanMedewerker(MedewerkerDto velden) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        Medewerker medewerker1 =medewerkerRepository.findByGebruikersnaam(email).get();
+        Medewerker medewerker1 =medewerkerRepository.findByGebruikersnaam(email).orElseThrow(() -> new ResourceNotFoundException("Medewerker niet gevonden met deze id : " + email));
         medewerkerMapper.update(medewerker1,velden);
         medewerkerRepository.save(medewerker1);
     }

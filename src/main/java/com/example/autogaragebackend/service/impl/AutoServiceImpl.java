@@ -58,7 +58,7 @@ public class AutoServiceImpl implements AutoService {
 
     @Override
     public Auto createAutometBestandEnKlant(AutoDto dto, MultipartFile file, long klantId) {
-        Klant klant = klantService.getKlantById(klantId).get();
+        Klant klant = klantService.getKlantById(klantId).orElseThrow(() -> new ResourceNotFoundException("Klant niet gevonden met deze id : " + klantId));
         Auto auto = autoMapper.map(dto);
         auto.setKlant(klant);
 
@@ -119,7 +119,7 @@ public class AutoServiceImpl implements AutoService {
     @Override
     public Auto updateAuto(long id, AutoDto auto) {
         if (!autoRepository.existsById(id)) throw new ResourceNotFoundException();
-        Auto bestaandeAuto = autoRepository.findById(id).get();
+        Auto bestaandeAuto = autoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Auto niet gevonden met deze id : " + id));
         bestaandeAuto.setKenteken(auto.getKenteken());
         bestaandeAuto.setMerk(auto.getMerk());
         bestaandeAuto.setModel(auto.getModel());
@@ -133,7 +133,7 @@ public class AutoServiceImpl implements AutoService {
     @Override
     public Auto deelUpdateAuto(long id, AutoDto velden) {
         if (!autoRepository.existsById(id)) throw new ResourceNotFoundException();
-        Auto auto = autoRepository.findById(id).get();
+        Auto auto = autoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Auto niet gevonden met deze id : " + id));
         autoMapper.update(auto,velden);
         return autoRepository.save(auto);
     }

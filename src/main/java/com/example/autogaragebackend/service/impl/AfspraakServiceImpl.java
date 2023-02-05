@@ -2,6 +2,7 @@ package com.example.autogaragebackend.service.impl;
 
 import com.example.autogaragebackend.dto.HandelingDto;
 import com.example.autogaragebackend.enums.AfspraakStatus;
+import com.example.autogaragebackend.exception.ResourceNotFoundException;
 import com.example.autogaragebackend.model.*;
 import com.example.autogaragebackend.repository.AfspraakRepository;
 import com.example.autogaragebackend.repository.GebruikteOnderdeelRepository;
@@ -47,25 +48,29 @@ public class AfspraakServiceImpl implements AfspraakService {
     public Afspraak createAfspraak(long klantId, long autoid) {
         Afspraak afspraak = new Afspraak();
 
-        Klant klant = klantService.getKlantById(klantId).get();
+        Klant klant = klantService.getKlantById(klantId).orElseThrow(() ->
+                new ResourceNotFoundException("Klant niet gevonden met deze id : " + klantId));
         afspraak.setKlant(klant);
         afspraak.setStatus(AfspraakStatus.GEPLAND.toString());
         afspraak.setTijd(new Timestamp(new Date().getTime()));
-        afspraak.setAuto(autoservice.getAutoById(autoid).get());
+        afspraak.setAuto(autoservice.getAutoById(autoid).orElseThrow(() ->
+                new ResourceNotFoundException("Auto niet gevonden met deze id : " + autoid)));
 
         return afspraakRepository.save(afspraak);
     }
 
     @Override
     public Afspraak updateStatus(long afspraakid, AfspraakStatus afspraakStatus) {
-        Afspraak afspraak = afspraakRepository.findById(afspraakid).get();
+        Afspraak afspraak = afspraakRepository.findById(afspraakid).orElseThrow(() ->
+                new ResourceNotFoundException("Afspraak niet gevonden met deze id : " + afspraakid));
         afspraak.setStatus(afspraakStatus.toString());
         return afspraakRepository.save(afspraak);
     }
 
     @Override
     public Afspraak getAfspraak(long afspraakid) {
-        return afspraakRepository.findById(afspraakid).get();
+        return afspraakRepository.findById(afspraakid).orElseThrow(() ->
+                new ResourceNotFoundException("Afspraak niet gevonden met deze id : " + afspraakid));
     }
 
     @Override
@@ -75,8 +80,9 @@ public class AfspraakServiceImpl implements AfspraakService {
 
     @Override
     public UitgevoerdeHandelingen voegHandelingAanAfspraak(long afspraakid, long handelingid) {
-        Afspraak afspraak = afspraakRepository.findById(afspraakid).get();
-        Handeling handeling = handelingService.getHandelingById(handelingid).get();
+        Afspraak afspraak = afspraakRepository.findById(afspraakid).orElseThrow(() -> new ResourceNotFoundException("Afspraak niet gevonden met deze id : " + afspraakid));
+        Handeling handeling = handelingService.getHandelingById(handelingid).orElseThrow(() ->
+                new ResourceNotFoundException("Handeling niet gevonden met deze id : " + handelingid));
 
         UitgevoerdeHandelingen uitgevoerdeHandeling = new UitgevoerdeHandelingen();
         uitgevoerdeHandeling.setHandeling(handeling);
@@ -97,7 +103,8 @@ public class AfspraakServiceImpl implements AfspraakService {
 
     @Override
     public GebruikteOnderdelen voegOnderdeelAanAfspraak(long afspraakid, long onderdeelid) {
-        Afspraak afspraak = afspraakRepository.findById(afspraakid).get();
+        Afspraak afspraak = afspraakRepository.findById(afspraakid).orElseThrow(() ->
+                new ResourceNotFoundException("Onderdeel niet gevonden met deze id : " + onderdeelid));
         Onderdeel onderdeel = onderdeelService.getOnderdeelById(onderdeelid).get();
 
         GebruikteOnderdelen gebruikteOnderdeel = new GebruikteOnderdelen();
@@ -128,7 +135,8 @@ public class AfspraakServiceImpl implements AfspraakService {
 
     @Override
     public Bon genereerBon(long afspraakid) {
-        Afspraak afspraak = afspraakRepository.findById(afspraakid).get();
+        Afspraak afspraak = afspraakRepository.findById(afspraakid).orElseThrow(() ->
+                new ResourceNotFoundException("Afspraak niet gevonden met deze id : " + afspraakid));
         Bon bon = new Bon();
         double totalenKosten = 0.00;
         bon.setAfspraakid(afspraakid);
